@@ -1,0 +1,8 @@
+- name: MARKING {{ item.name }} FOR ISIS ACTIVATION
+  set_fact:
+    interface: "{{ item.name }}"
+
+- name: ADDING L3 INTERFACE TO LIST
+  set_fact:
+    interfaces_to_activate: "{{ interfaces_to_activate }} + [ '{{ interface }}' ]"
+  when: ('{{ interface }}' in show_clns.stdout[0]) or ('{{ interface }}' in 'loopback0')

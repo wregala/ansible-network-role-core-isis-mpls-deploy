@@ -1,0 +1,34 @@
+- name: GATHER FACTS
+  ios_facts:
+    gather_network_resources: l3_interfaces
+
+- name: VALIDATE ISIS INTERFACES
+  ios_command:
+    commands: show clns protocol
+  register: show_clns
+  
+- name: INITIALIZING VARIABLES
+  set_fact:
+    interfaces_to_activate: "[]"
+    interface: ""
+    router_id: "{{ ansible_net_interfaces.Loopback0.ipv4[0].address }}"
+
+- include_tasks: l3_interface_loop.yml
+  when: "'ipv4' in item"
+  loop: "{{ ansible_network_resources.l3_interfaces }}"
+
+#- name: Display all L3 interfaces
+#  debug:
+#    var: interfaces_to_activate
+#
+#- name: Display router id
+#  debug:
+#    var: router_id
+#
+- include_tasks: ios_isis_global.yml
+- include_tasks: ios_isis_l3_interfaces_config.yml
+  loop: "{{ interfaces_to_activate }}"
+
+- name: SAVE CONFIGURATION
+  ios_config:
+    save_when: always

@@ -1,0 +1,20 @@
+- name: ENABLE IPV6 UNICAST ROUTING
+  ios_config:
+    lines:
+      - ipv6 unicast-routing
+
+- name: CONFIGURE ISIS GLOBALLY
+  ios_config:
+    lines:
+      - is-type level-2-only
+      - log-adjacency-changes
+      - metric-style wide
+    parents: router isis 1
+
+- name: CONFIGURE ISIS FOR IPV6
+  ios_config:
+    lines:
+      - multi-topology
+    parents:
+      - router isis 1
+      - address-family ipv6

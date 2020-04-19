@@ -1,0 +1,6 @@
+- name: CONFIGURE ISIS ON L3 INTERFACES
+  ios_config:
+    lines:
+      - ip router isis 1
+      - ipv6 router isis 1
+    parents: interface {{ item }}
