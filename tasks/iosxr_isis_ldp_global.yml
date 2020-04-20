@@ -1,0 +1,23 @@
+- name: CONFIGURE ISIS GLOBALLY
+  iosxr_config:
+    lines:
+      - log adjacency changes
+      - is-type level-2-only
+      - address-family ipv6 unicast
+    parents:
+      - router isis 1
+
+- name: CONFIGURE ISIS METRIC-STYLE WIDE AND LDP
+  iosxr_config:
+    lines:
+      - metric-style wide
+      - mpls ldp auto-config
+    parents:
+      - router isis 1
+      - address-family ipv4 unicast
+
+- name: CONFIGURE LDP GLOBALLY
+  iosxr_config:
+    lines:
+      - address-family ipv4
+    parents: mpls ldp

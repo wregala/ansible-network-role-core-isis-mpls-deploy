@@ -1,17 +1,19 @@
 - name: GATHER FACTS
-  ios_facts:
+  iosxr_facts:
     gather_network_resources: l3_interfaces
 
+# Used to exclude L3 interfaces from ISIS for IPv6 activation
+
 - name: VALIDATE ISIS INTERFACES
-  ios_command:
-    commands: show clns protocol
+  iosxr_command:
+    commands: show isis interface
   register: show_clns
   
 - name: INITIALIZING VARIABLES
   set_fact:
     interfaces_to_activate: "[]"
     interface: ""
-    router_id: "{{ ansible_net_interfaces.Loopback0.ipv4[0].address }}"
+    router_id: "{{ ansible_net_interfaces.Loopback0.ipv4.address }}"
 
 - include_tasks: l3_interface_loop.yml
   when: "'ipv4' in item"
@@ -25,10 +27,6 @@
 #  debug:
 #    var: router_id
 #
-- include_tasks: ios_isis_ldp_global.yml
-- include_tasks: ios_isis_l3_interfaces_config.yml
+- include_tasks: iosxr_isis_ldp_global.yml
+- include_tasks: iosxr_isis_l3_interfaces_config.yml
   loop: "{{ interfaces_to_activate }}"
-
-- name: SAVE CONFIGURATION
-  ios_config:
-    save_when: always

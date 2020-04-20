@@ -1,0 +1,8 @@
+- name: CONFIGURE ISIS ON L3 INTERFACES
+  iosxr_config:
+    lines:
+      - address-family ipv4 unicast
+      - address-family ipv6 unicast
+    parents: 
+      - router isis 1
+      - interface {{ item }}

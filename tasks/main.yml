@@ -1,3 +1,6 @@
 ---
 - include_tasks: ios_isis_gather.yml
   when: ansible_network_os == 'ios'
+
+- include_tasks: iosxr_isis_gather.yml
+  when: ansible_network_os == 'iosxr'

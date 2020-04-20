@@ -18,3 +18,9 @@
     parents:
       - router isis 1
       - address-family ipv6
+
+- name: CONFIGURE LDP AUTOCONFIG
+  ios_config:
+    lines:
+      - mpls ldp autoconfig
+    parents: router isis 1
